@@ -24,8 +24,19 @@ public static class OpenTelemetryExtensions
             ShouldListenTo = _ => true,
             Sample = (ref ActivityCreationOptions<ActivityContext> _) => ActivitySamplingResult.AllDataAndRecorded,
             SampleUsingParentId = (ref ActivityCreationOptions<string> _) => ActivitySamplingResult.AllDataAndRecorded,
-            ActivityStarted = activity => ConsoleColor.Green.WriteLine($"[BEGIN] {activity.ParentId}:{activity.Id}\n"),
-            ActivityStopped = activity => ConsoleColor.Green.WriteLine($"[END] {activity.ParentId}:{activity.Id}\n")
+            ActivityStarted = activity => PrintActivity(activity, "BEGIN"),
+            ActivityStopped = activity => PrintActivity(activity, "END")
         };
+    }
+
+    private static void PrintActivity(Activity activity, string prefix)
+    {
+        var activityFullId = activity.ParentId is null
+            ? $"[{activity.Id}]"
+            : $"[{activity.ParentId}] [{activity.Id}]";
+
+        ConsoleColor.Blue.Write($"[{prefix}] ");
+        ConsoleColor.Green.Write($"[{activity.DisplayName}] ");
+        ConsoleColor.Yellow.WriteLine($"{activityFullId}{Environment.NewLine}");
     }
 }
