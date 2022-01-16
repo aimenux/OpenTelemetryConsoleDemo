@@ -1,14 +1,12 @@
 ﻿using System.Diagnostics;
+using App.Helpers;
 using Microsoft.Extensions.Logging;
-using static App.Extensions.OpenTelemetryExtensions;
 
 namespace App;
 
 public class PlayerOneService
 {
     private readonly ILogger<PlayerOneService> _logger;
-
-    private static readonly ActivitySource ActivitySource = CreateActivitySource<PlayerOneService>();
 
     public PlayerOneService(ILogger<PlayerOneService> logger)
     {
@@ -17,8 +15,7 @@ public class PlayerOneService
 
     public async Task PingAsync()
     {
-        using var activity = ActivitySource.StartActivity($"Activity.{nameof(PingAsync)}")!;
-        activity.AddEvent(new ActivityEvent("PlayerOne is playing"));
+        using var activity = OpenTelemetrySource.Instance.StartActivity($"Activity.{nameof(PingAsync)}")!;
         activity.SetTag("player", "one");
         _logger.LogInformation("Ping");
         await Task.Delay(1000);

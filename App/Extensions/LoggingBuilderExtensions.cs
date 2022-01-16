@@ -8,7 +8,11 @@ public static class LoggingBuilderExtensions
 {
     public static void AddConsoleLogger(this ILoggingBuilder loggingBuilder)
     {
-        if (!File.Exists(PathExtensions.GetSettingFilePath()))
+        if (File.Exists(PathExtensions.GetSettingFilePath()))
+        {
+            loggingBuilder.AddConsole();
+        }
+        else
         {
             loggingBuilder.AddSimpleConsole(options =>
             {

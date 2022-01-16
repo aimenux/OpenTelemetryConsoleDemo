@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using static App.Extensions.OpenTelemetryExtensions;
+using App.Helpers;
 
 namespace App;
 
@@ -8,7 +8,7 @@ public class GameService
     private readonly PlayerOneService _playerOneService;
     private readonly PlayerTwoService _playerTwoService;
 
-    private static readonly ActivitySource ActivitySource = CreateActivitySource<PlayerOneService>();
+    public string GameName { get; } = $"{Guid.NewGuid():P}";
 
     public GameService(PlayerOneService playerOneService, PlayerTwoService playerTwoService)
     {
@@ -18,13 +18,10 @@ public class GameService
 
     public async Task RunAsync()
     {
-        using var activity = ActivitySource.StartActivity($"Activity.{nameof(RunAsync)}")!;
-
-        activity.SetTag("GameStartDate", DateTime.UtcNow);
-        
+        using var activity = OpenTelemetrySource.Instance.StartActivity($"Activity.{nameof(RunAsync)}")!;
+        activity.AddEvent(new ActivityEvent($"Game {GameName} is starting"));
         await _playerOneService.PingAsync();
         await _playerTwoService.PongAsync();
-
-        activity.SetTag("GameEndDate", DateTime.UtcNow);
+        activity.AddEvent(new ActivityEvent($"Game {GameName} is stopping"));
     }
 }

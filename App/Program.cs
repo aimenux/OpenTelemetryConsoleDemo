@@ -1,9 +1,11 @@
 ﻿using App.Extensions;
+using App.Helpers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using OpenTelemetry.Logs;
+using OpenTelemetry.Resources;
 
 namespace App;
 
@@ -11,6 +13,7 @@ public static class Program
 {
     public static async Task Main(string[] args)
     {
+        using var _ = OpenTelemetryBootstrapper.CreateOpenTelemetryTracer();
         using var host = CreateHostBuilder(args).Build();
         var service = host.Services.GetRequiredService<GameService>();
         await service.RunAsync();
@@ -35,8 +38,9 @@ public static class Program
                 loggingBuilder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
                 loggingBuilder.AddOpenTelemetry(options =>
                 {
-                    options.ConfigureOpenTelemetry("open-telemetry-demo");
-                    options.AddConsoleExporter();
+                    options
+                        .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("OpenTelemetryLogger"))
+                        .AddConsoleExporter();
                 });
             })
             .ConfigureServices((_, services) =>

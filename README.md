@@ -5,7 +5,7 @@
 Using OpenTelemetry with console applications
 ```
 
-In this demo, i m using [OpenTelemetry](https://devblogs.microsoft.com/dotnet/opentelemetry-net-reaches-v1-0/) in order to build instrumentation inside a console application.
+In this demo, i m using [OpenTelemetry](https://devblogs.microsoft.com/dotnet/opentelemetry-net-reaches-v1-0/) in order to build instrumentation within a console application.
 >
 
 ![OpenTelemetryConsoleDemo](Screenshots/OpenTelemetryConsoleDemo.png)
