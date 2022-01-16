@@ -13,13 +13,11 @@ public static class Program
 {
     public static async Task Main(string[] args)
     {
-        using var _ = OpenTelemetryBootstrapper.CreateOpenTelemetryTracer();
         using var host = CreateHostBuilder(args).Build();
+        var configuration = host.Services.GetRequiredService<IConfiguration>();
+        using var _ = OpenTelemetryBootstrapper.CreateOpenTelemetryTracer(configuration);
         var service = host.Services.GetRequiredService<GameService>();
         await service.RunAsync();
-
-        Console.WriteLine("Press any key to exit !");
-        Console.ReadKey();
     }
 
     private static IHostBuilder CreateHostBuilder(string[] args) =>

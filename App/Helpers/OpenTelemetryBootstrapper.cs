@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Microsoft.Extensions.Configuration;
 using OpenTelemetry;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -12,7 +13,7 @@ public static class OpenTelemetryBootstrapper
         Activity.DefaultIdFormat = ActivityIdFormat.W3C;
     }
 
-    public static TracerProvider? CreateOpenTelemetryTracer()
+    public static TracerProvider? CreateOpenTelemetryTracer(IConfiguration configuration)
     {
         var resourceBuilder = ResourceBuilder.CreateDefault().AddService("OpenTelemetryTracer");
 
@@ -21,6 +22,10 @@ public static class OpenTelemetryBootstrapper
             .AddSource(OpenTelemetrySource.SourceName)
             .SetResourceBuilder(resourceBuilder)
             .AddConsoleExporter()
+            .AddZipkinExporter(options =>
+            {
+                options.Endpoint = new Uri(configuration.GetValue<string>("ZipKin"));
+            })
             .Build();
 
         return openTelemetryTracer;
