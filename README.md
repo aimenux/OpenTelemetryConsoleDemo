@@ -10,11 +10,11 @@ In this demo, i m using [OpenTelemetry](https://devblogs.microsoft.com/dotnet/op
 >
 :rocket: To run code, follow these steps :
 > 
-> - Start docker containers : type `docker compose up` in your terminal
+> - Type `docker compose up` in your terminal
 >
 > - Open [zipkin url](http://localhost:9411/zipkin) in your browser
 >
-> - Stop docker containers : type `docker compose down` in your terminal
+> - Type `docker compose down` in your terminal
 
 ![OpenTelemetryConsoleDemo](Screenshots/OpenTelemetryConsoleDemo.png)
 
