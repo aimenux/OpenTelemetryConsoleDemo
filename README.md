@@ -18,4 +18,4 @@ In this demo, i m using [OpenTelemetry](https://devblogs.microsoft.com/dotnet/op
 
 ![OpenTelemetryConsoleDemo](Screenshots/OpenTelemetryConsoleDemo.png)
 
-**`Tools`** : vs22, net 6.0, docker, opentelemetry, zipkin
+**`Tools`** : net 8.0, docker, open-telemetry, zipkin

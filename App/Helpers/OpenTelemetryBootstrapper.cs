@@ -24,7 +24,9 @@ public static class OpenTelemetryBootstrapper
             .AddConsoleExporter()
             .AddZipkinExporter(options =>
             {
-                options.Endpoint = new Uri(configuration.GetValue<string>("ZipKin"));
+                var zipKinUrl = configuration.GetValue<string>("ZipKin");
+                ArgumentException.ThrowIfNullOrWhiteSpace(zipKinUrl);
+                options.Endpoint = new Uri(zipKinUrl);
             })
             .Build();
 
